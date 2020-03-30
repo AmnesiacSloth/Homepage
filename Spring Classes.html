@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Spring Quarter</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="favicon.png" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+    <div id="search">
+        <input id="search-field" type="text" name="search-field" onkeypress="return search(event)"/>
+    </div>
+    <div class="container">
+        <div id="clock"></div>
+        <div class="weather-container">
+            <div class="row">
+                <div id="weather-description"class="inline"></div>
+                <div class="inline">-</div>
+                <div id="temp" class="inline"></div>
+            </div>
+        </div>
+        <div class="bookmark-container">
+            <div class="bookmark-set">
+                <div class="bookmark-title">CSE 12</div>
+                <div class="bookmark-inner-container">
+                  <a class="bookmark" href="https://piazza.com/class/k85duuui5pp3y9" target="_self">Piazza</a>
+                  <a class="bookmark" href="https://canvas.ucsd.edu/courses/12774" target="_self">Canvas</a>
+                  <a class="bookmark" href="https://learn.zybooks.com/zybook/UCSDCSE12Spring2020" target="_self">Zybooks</a>
+                  <a class="bookmark" href="https://docs.google.com/spreadsheets/d/1BfDgxxyCZgFNHhO9Yj9o9U5WUCPwD5U7pvNx2Z0geDQ/edit#gid=1233661034" target="_self">Course Schedule</a>
+                  <a class="bookmark" href="https://www.gradescope.com/courses/97403" target="_self">Gradescope</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">CSE 15L</div>
+                <div class="bookmark-inner-container">
+          <a class="bookmark" href="https://piazza.com/class/k89e1x3r2h5464" target="_self">Piazza</a>
+          <a class="bookmark" href="http://ieng6.ucsd.edu/~cs15x/" target="_self">Course Website</a>
+          <a class="bookmark" href="http://ieng6.ucsd.edu/~cs15x/homework/index.html" target="_self">Assignments</a>
+          <a class="bookmark" href="http://ieng6.ucsd.edu/~cs15x/labs/index.html" target="_self">Labs</a>
+					<a class="bookmark" href="http://www.gradesource.com/reports/7/31489/index.html" target="_self">Gradesource</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+            <div class="bookmark-title">MATH 20A</div>
+                <div class="bookmark-inner-container">
+					             <a class="bookmark" href="https://piazza.com/class/k7zcb6m4bu149f?cid=9" target="_self">Piazza</a>
+                       <a class="bookmark" href="http://www.math.ucsd.edu/~lbanzaldo/20a_spring2020/" target="_self">Course Website</a>
+					             <a class="bookmark" href="https://canvas.ucsd.edu/courses/15637/external_tools/82" target="_self">Lectures</a>
+                       <a class="bookmark" href="file:///C:/Users/cjvelasq/Desktop/Calculus%2020A%20&%20B.pdf" target="_self">Textbook</a>
+                       <a class="bookmark" href="https://www.gradescope.com/courses/109640" target="_self">Gradescope</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">MATH 20B</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://piazza.com/class/k89gt6frx60rj" target="_self">Piazza</a>
+                    <a class="bookmark" href="https://canvas.ucsd.edu/courses/15615" target="_self">Canvas</a>
+                    <a class="bookmark" href="https://www.webassign.net/v4cgi/student.pl?k=20200330203211a296adc23b03a851e7d77452210cf361834d6479::app-1400@ucsd" target="_self">Webassign</a>
+                </div>
+            </div>
+            <div class="bookmark-set">
+                <div class="bookmark-title">PHYS 2A</div>
+                <div class="bookmark-inner-container">
+                    <a class="bookmark" href="https://piazza.com/ucsd/spring2020/phys2a" target="_self">Piazza</a>
+                    <a class="bookmark" href="https://canvas.ucsd.edu/courses/13932" target="_self">Canvas</a>
+                    <a class="bookmark" href="https://canvas.ucsd.edu/courses/13932/assignments" target="_self">Assignments</a>
+                    <a class="bookmark" href="https://www.gradescope.com/courses/96248" target="_self">Gradescope</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search on enter key event
+        function search(e) {
+            if (e.keyCode == 13) {
+                var val = document.getElementById("search-field").value;
+                window.open("https://google.com/search?q=" + val);
+            }
+        }
+        // Get current time and format
+        function getTime() {
+            let date = new Date(),
+                min = date.getMinutes(),
+                sec = date.getSeconds(),
+                hour = date.getHours();
+
+            return "" +
+                (hour < 10 ? ("0" + hour) : hour) + ":" +
+                (min < 10 ? ("0" + min) : min) + ":" +
+                (sec < 10 ? ("0" + sec) : sec);
+        }
+
+        window.onload = () => {
+            let xhr = new XMLHttpRequest();
+            // Request to open weather map
+            xhr.open('GET', 'http://api.openweathermap.org/data/2.5/weather?id=5352963&units=imperial&appid=e5b292ae2f9dae5f29e11499c2d82ece');
+            xhr.onload = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        let json = JSON.parse(xhr.responseText);
+                        console.log(json);
+                        document.getElementById("temp").innerHTML = json.main.temp.toFixed(0) + " F";
+                        document.getElementById("weather-description").innerHTML = json.weather[0].description;
+                    } else {
+                        console.log('error msg: ' + xhr.status);
+                    }
+                }
+            }
+            xhr.send();
+            // Set up the clock
+            document.getElementById("clock").innerHTML = getTime();
+            // Set clock interval to tick clock
+            setInterval( () => {
+                document.getElementById("clock").innerHTML = getTime();
+            },100);
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.keyCode == 32) {          // Spacebar code to open search
+                document.getElementById('search').style.display = 'flex';
+                document.getElementById('search-field').focus();
+            } else if (event.keyCode == 27) {   // Esc to close search
+                document.getElementById('search-field').value = '';
+                document.getElementById('search-field').blur();
+                document.getElementById('search').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
