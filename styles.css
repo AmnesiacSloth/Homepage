@@ -14,7 +14,7 @@ body {
     flex-direction: column;
 }
 
-.springbutton{
+.quarterButton{
   background-color: #272727;
   color: #fff;
   outline: none;
@@ -30,7 +30,7 @@ body {
   font-size: .85rem;
   margin: 0em .5em;
 }
-.springbutton:hover{
+.quarterButton:hover{
   transition-duration: 0.4s;
   background-color: #fff;
 }
